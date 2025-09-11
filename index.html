@@ -3,265 +3,289 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hospital Management - Patient Workflow</title>
+  <title>Online Book Store</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #ffe6f0;
-      color: #333;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
     }
+
     header {
-      background-color: #ffb6c1;
-      padding: 1rem;
+      background: #333;
+      color: #fff;
+      padding: 15px;
       text-align: center;
-      font-size: 1.5rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .books, .cart {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 48%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .category {
+      margin-bottom: 20px;
+    }
+
+    .category h2 {
+      color: #444;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .book {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .book:last-child {
+      border: none;
+    }
+
+    button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .cart-items {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart-items li {
+      margin: 8px 0;
+    }
+
+    .remove-btn {
+      background: #dc3545;
+      margin-left: 10px;
+      padding: 5px 8px;
+    }
+
+    .remove-btn:hover {
+      background: #c82333;
+    }
+
+    .total {
       font-weight: bold;
+      margin-top: 15px;
     }
-    section {
+
+    #orderSection {
+      margin-top: 20px;
       display: none;
-      padding: 1rem;
     }
-    section.active {
-      display: block;
+
+    .payment-form {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      display: none;
     }
-    .form-group {
-      margin: 1rem 0;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    input, textarea, select, button {
+
+    .payment-form input, .payment-form select {
       width: 100%;
-      padding: 0.5rem;
+      padding: 8px;
+      margin: 8px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
-      margin-bottom: 0.5rem;
     }
-    button {
-      background-color: #ffb6c1;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background-color: #ff99aa;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.75rem;
-      text-align: left;
-    }
-    th {
-      background-color: #ffb6c1;
-    }
-    .back-btn {
-      margin-top: 1rem;
+
+    .confirmation {
+      margin-top: 20px;
+      padding: 15px;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 10px;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <header>Hospital Management - Patient Workflow</header>
 
-  <!-- Registration Section -->
-  <section id="register" class="active">
-    <h2>Register</h2>
-    <div class="form-group">
-      <label>Name:</label>
-      <input type="text" id="regName">
-    </div>
-    <div class="form-group">
-      <label>Age:</label>
-      <input type="number" id="regAge">
-    </div>
-    <div class="form-group">
-      <label>Username:</label>
-      <input type="text" id="regUser">
-    </div>
-    <div class="form-group">
-      <label>Password:</label>
-      <input type="password" id="regPass">
-    </div>
-    <button onclick="registerPatient()">Register</button>
-    <p id="regMsg" style="color:green;"></p>
-  </section>
+  <header>
+    <h1>📚 Online Book Store</h1>
+  </header>
 
-  <!-- Login Section -->
-  <section id="login">
-    <h2>Login</h2>
-    <div class="form-group">
-      <label>Username:</label>
-      <input type="text" id="loginUser">
-    </div>
-    <div class="form-group">
-      <label>Password:</label>
-      <input type="password" id="loginPass">
-    </div>
-    <button onclick="loginPatient()">Login</button>
-    <p id="loginMsg" style="color:red;"></p>
-    <button class="back-btn" onclick="showSection('register')">Back to Register</button>
-  </section>
+  <div class="container">
+    <!-- Books Section -->
+    <div class="books">
+      <!-- Technology Category -->
+      <div class="category">
+        <h2>💻 Technology</h2>
+        <div class="book">
+          <h3>JavaScript Essentials</h3>
+          <p>Author: John Doe</p>
+          <p>Price: $20</p>
+          <button onclick="addToCart('JavaScript Essentials', 20)">Add to Cart</button>
+        </div>
+        <div class="book">
+          <h3>Mastering Python</h3>
+          <p>Author: Alan Brown</p>
+          <p>Price: $25</p>
+          <button onclick="addToCart('Mastering Python', 25)">Add to Cart</button>
+        </div>
+      </div>
 
-  <!-- Symptom Checker Section -->
-  <section id="symptoms">
-    <h2>Symptom Checker</h2>
-    <p>Enter your symptoms separated by commas (e.g., fever, cough):</p>
-    <textarea id="symptomInput" rows="3"></textarea>
-    <button onclick="processSymptoms()">Check Disease</button>
-    <button class="back-btn" onclick="showSection('login')">Back to Login</button>
-  </section>
+      <!-- Fiction Category -->
+      <div class="category">
+        <h2>📖 Fiction</h2>
+        <div class="book">
+          <h3>The Lost World</h3>
+          <p>Author: Arthur Conan Doyle</p>
+          <p>Price: $18</p>
+          <button onclick="addToCart('The Lost World', 18)">Add to Cart</button>
+        </div>
+        <div class="book">
+          <h3>Harry Potter</h3>
+          <p>Author: J.K. Rowling</p>
+          <p>Price: $30</p>
+          <button onclick="addToCart('Harry Potter', 30)">Add to Cart</button>
+        </div>
+      </div>
 
-  <!-- Appointment Confirmation -->
-  <section id="confirmation">
-    <h2>Appointment Confirmation</h2>
-    <p><strong>Disease:</strong> <span id="confDisease"></span></p>
-    <p><strong>Assigned Doctor:</strong> <span id="confDoctor"></span></p>
-    <p><strong>Appointment Time:</strong> <span id="confTime"></span></p>
-    <p><strong>Bill Amount:</strong> ₹<span id="confBill"></span></p>
-    <div class="form-group">
-      <label>Select Payment Mode:</label>
-      <select id="paymentMode">
-        <option value="Cash">Cash</option>
-        <option value="Credit Card">Credit Card</option>
-        <option value="UPI">UPI</option>
-        <option value="Net Banking">Net Banking</option>
-      </select>
+      <!-- Kids Category -->
+      <div class="category">
+        <h2>🧸 Kids</h2>
+        <div class="book">
+          <h3>Bedtime Stories</h3>
+          <p>Author: Lily Grace</p>
+          <p>Price: $12</p>
+          <button onclick="addToCart('Bedtime Stories', 12)">Add to Cart</button>
+        </div>
+        <div class="book">
+          <h3>Adventures of Tom Sawyer</h3>
+          <p>Author: Mark Twain</p>
+          <p>Price: $15</p>
+          <button onclick="addToCart('Adventures of Tom Sawyer', 15)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Self-Help Category -->
+      <div class="category">
+        <h2>🌱 Self-Help</h2>
+        <div class="book">
+          <h3>Atomic Habits</h3>
+          <p>Author: James Clear</p>
+          <p>Price: $22</p>
+          <button onclick="addToCart('Atomic Habits', 22)">Add to Cart</button>
+        </div>
+        <div class="book">
+          <h3>The Power of Now</h3>
+          <p>Author: Eckhart Tolle</p>
+          <p>Price: $20</p>
+          <button onclick="addToCart('The Power of Now', 20)">Add to Cart</button>
+        </div>
+      </div>
     </div>
-    <button onclick="payBill()">Pay Now</button>
-    <button class="back-btn" onclick="showSection('symptoms')">Back to Symptoms</button>
-    <button class="back-btn" onclick="showSection('appointments')">View All Appointments</button>
-  </section>
 
-  <!-- Appointments Table -->
-  <section id="appointments">
-    <h2>All Appointments</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Patient</th>
-          <th>Disease</th>
-          <th>Doctor</th>
-          <th>Time</th>
-          <th>Bill</th>
-          <th>Payment Mode</th>
-        </tr>
-      </thead>
-      <tbody id="appointmentList"></tbody>
-    </table>
-    <button class="back-btn" onclick="showSection('symptoms')">Back to Symptoms</button>
-  </section>
+    <!-- Cart Section -->
+    <div class="cart">
+      <h2>🛒 Shopping Cart</h2>
+      <ul class="cart-items" id="cartItems"></ul>
+      <p class="total">Total: $<span id="totalPrice">0</span></p>
+
+      <div id="orderSection">
+        <button onclick="showPaymentForm()">Click to Order</button>
+      </div>
+
+      <div class="payment-form" id="paymentForm">
+        <h3>Payment Details</h3>
+        <input type="text" id="name" placeholder="Enter Full Name" required>
+        <input type="email" id="email" placeholder="Enter Email" required>
+        <input type="text" id="address" placeholder="Enter Address" required>
+        <select id="paymentMethod">
+          <option value="UPI">UPI</option>
+          <option value="Card">Credit/Debit Card</option>
+          <option value="COD">Cash on Delivery</option>
+        </select>
+        <button onclick="confirmPayment()">Confirm Payment</button>
+      </div>
+
+      <div class="confirmation" id="confirmationMsg">
+        ✅ Order placed successfully! Your books will be delivered soon.
+      </div>
+    </div>
+  </div>
 
   <script>
-    const patients = [];
-    const appointments = [];
-    const slots = ["10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM"];
-    let slotIndex = 0;
-    let currentPatient = null;
+    let cart = [];
+    let total = 0;
 
-    const diseaseMap = [
-      {symptoms:["fever","cough","cold"], disease:"Flu", doctor:"General Physician", bill:500},
-      {symptoms:["chest pain","shortness of breath"], disease:"Heart Problem", doctor:"Cardiologist", bill:1000},
-      {symptoms:["headache","dizziness"], disease:"Migraine", doctor:"Neurologist", bill:700},
-      {symptoms:["stomach pain","nausea"], disease:"Gastric Issue", doctor:"Gastroenterologist", bill:600},
-      {symptoms:["back pain","joint pain"], disease:"Orthopedic Issue", doctor:"Orthopedic Surgeon", bill:800},
-      {symptoms:["skin rash","itching"], disease:"Skin Allergy", doctor:"Dermatologist", bill:400}
-    ];
-
-    function showSection(id) {
-      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function addToCart(book, price) {
+      cart.push({book, price});
+      total += price;
+      displayCart();
     }
 
-    function registerPatient() {
-      const name = document.getElementById('regName').value;
-      const age = document.getElementById('regAge').value;
-      const user = document.getElementById('regUser').value;
-      const pass = document.getElementById('regPass').value;
-      if (name && age && user && pass) {
-        patients.push({name, age, user, pass});
-        document.getElementById('regMsg').textContent = 'Registration successful! Please login.';
-        setTimeout(() => {
-          document.getElementById('regMsg').textContent = '';
-          showSection('login');
-        }, 1000);
-      } else {
-        document.getElementById('regMsg').textContent = 'All fields required!';
-      }
+    function removeFromCart(index) {
+      total -= cart[index].price;
+      cart.splice(index, 1);
+      displayCart();
     }
 
-    function loginPatient() {
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
-      const found = patients.find(p => p.user === user && p.pass === pass);
-      if (found) {
-        currentPatient = found;
-        showSection('symptoms');
-        document.getElementById('loginMsg').textContent = '';
-      } else {
-        document.getElementById('loginMsg').textContent = 'Invalid login details';
-      }
-    }
+    function displayCart() {
+      const cartItems = document.getElementById("cartItems");
+      const totalPrice = document.getElementById("totalPrice");
+      const orderSection = document.getElementById("orderSection");
 
-    function processSymptoms() {
-      const input = document.getElementById('symptomInput').value.toLowerCase();
-      const symptoms = input.split(',').map(s => s.trim());
-      let matched = null;
-      for (let map of diseaseMap) {
-        if (map.symptoms.some(sym => symptoms.includes(sym))) {
-          matched = map;
-          break;
-        }
-      }
-      if (matched) {
-        const time = slots[slotIndex % slots.length];
-        slotIndex++;
-        document.getElementById('confDisease').textContent = matched.disease;
-        document.getElementById('confDoctor').textContent = matched.doctor;
-        document.getElementById('confTime').textContent = time;
-        document.getElementById('confBill').textContent = matched.bill;
-        showSection('confirmation');
-        const appointment = {patient: currentPatient.name, disease: matched.disease, doctor: matched.doctor, time, bill: matched.bill, paymentMode:''};
-        appointments.push(appointment);
-        updateAppointmentTable();
-      } else {
-        alert('No matching disease found. Please consult admin.');
-      }
-    }
-
-    function payBill() {
-      const mode = document.getElementById('paymentMode').value;
-      const lastAppointment = appointments[appointments.length - 1];
-      if (lastAppointment) {
-        lastAppointment.paymentMode = mode;
-        alert(Payment of ₹${lastAppointment.bill} successful via ${mode});
-        updateAppointmentTable();
-        showSection('appointments');
-      }
-    }
-
-    function updateAppointmentTable() {
-      const tbody = document.getElementById('appointmentList');
-      tbody.innerHTML = '';
-      appointments.forEach(app => {
-        const row = `
-          <tr>
-            <td>${app.patient}</td>
-            <td>${app.disease}</td>
-            <td>${app.doctor}</td>
-            <td>${app.time}</td>
-            <td>₹${app.bill}</td>
-            <td>${app.paymentMode}</td>
-          </tr>
-        `;
-        tbody.innerHTML += row;
+      cartItems.innerHTML = "";
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.book} - $${item.price}`;
+        
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "❌";
+        removeBtn.classList.add("remove-btn");
+        removeBtn.onclick = () => removeFromCart(index);
+        
+        li.appendChild(removeBtn);
+        cartItems.appendChild(li);
       });
+
+      totalPrice.textContent = total;
+
+      orderSection.style.display = cart.length > 0 ? "block" : "none";
+    }
+
+    function showPaymentForm() {
+      document.getElementById("paymentForm").style.display = "block";
+    }
+
+    function confirmPayment() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const address = document.getElementById("address").value;
+      
+      if (!name || !email || !address) {
+        alert("Please fill in all details!");
+        return;
+      }
+
+      document.getElementById("paymentForm").style.display = "none";
+      document.getElementById("confirmationMsg").style.display = "block";
     }
   </script>
+
 </body>
 </html>
